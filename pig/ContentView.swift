@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var gameScore = 0
     @State private var randomValue = 0
     @State private var rotation = 0.0
+    @State private var gameOver = false
     var body: some View {
         ZStack {
             Color.gray.opacity(0.7).ignoresSafeArea()
@@ -40,6 +41,9 @@ struct ContentView: View {
                         withAnimation(.easeInOut(duration: 1)) {
                             rotation += 360
                         }
+                        if gameScore >= 100 {
+                            gameOver = true
+                        }
                     }
                         .buttonStyle(CustomButtonStyle())
                 }
@@ -47,7 +51,21 @@ struct ContentView: View {
                 NavigationLink("How To Play", destination: InstructionView())
                     .font(Font.custom("Marker Felt", size: 24))
                     .padding()
+                Button("Reset"){
+                    endTurn()
+                    gameScore = 0
+                }
+                .font(Font.custom("Marker Felt", size: 24))
             }
+            .alert(isPresented: $gameOver, content: {
+                Alert(title: Text("You Won The Game"),dismissButton:
+                        .destructive(Text("Play Again"), action: {
+                            withAnimation{
+                                gameScore = 0
+                                gameOver = false
+                    }
+                }))
+            })
         }
     }
     func endTurn() {
