@@ -25,7 +25,6 @@ struct ContentView: View {
                   .rotationEffect(.degrees(rotation))
                   .rotation3DEffect(.degrees(rotation), axis: (x: 1, y: 1, z: 0))
                    .padding()
-                Spacer()
                 CustomText(text: "Turn Score: \(turnScore)")
                 HStack {
                     Button ("Roll") {
@@ -45,6 +44,9 @@ struct ContentView: View {
                         .buttonStyle(CustomButtonStyle())
                 }
                 CustomText(text: "Game Score: \(gameScore)")
+                NavigationLink("How To Play", destination: InstructionView())
+                    .font(Font.custom("Marker Felt", size: 24))
+                    .padding()
             }
         }
     }
@@ -89,7 +91,31 @@ struct CustomButtonStyle: ButtonStyle {
             .clipShape (RoundedRectangle (cornerRadius: 10))
     }
 }
-
+struct InstructionView: View {
+    var body: some View {
+        ZStack {
+            Color.gray.opacity(0.7).ignoresSafeArea()
+            VStack {
+                Image ("Pig").resizable().frame(width: 150, height: 150)
+                CustomText(text: "Pig")
+                VStack(alignment: .leading)  {
+                    
+                    Text("In the game of Pig, players take individual turns. Each turn, a player repeatedly rolls a single die until either a pig is rolled or the player decides to \"hold\".")
+                        .padding()
+                    Text("If a player rolls a pig, they score nothing and it is the next player's turn.")
+                        .padding()
+                    Text("If the player rolls any other number, it is added to their turn total, and the player's turn continues.")
+                        .padding()
+                    Text("If the player chooses to \"hold\", their turn total is added to the game score, and it becomes the next player's turn.")
+                        .padding ()
+                    Text("A player wins the game when the game score becomes 100 or more on their turn.")
+                        .padding()
+                }
+                Spacer()
+            }
+        }
+    }
+}
 
 
 
