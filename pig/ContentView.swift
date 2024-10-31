@@ -14,58 +14,62 @@ struct ContentView: View {
     @State private var rotation = 0.0
     @State private var gameOver = false
     var body: some View {
-        ZStack {
-            Color.gray.opacity(0.7).ignoresSafeArea()
-            VStack {
-                Image("Pig").resizable().frame(width: 150, height: 150)
-                CustomText(text: "Pig")
-                Spacer()
-               Image("pips \(randomValue)")
-                  .resizable()
-                  .frame(width: 150, height: 150)
-                  .rotationEffect(.degrees(rotation))
-                  .rotation3DEffect(.degrees(rotation), axis: (x: 1, y: 1, z: 0))
-                   .padding()
-                CustomText(text: "Turn Score: \(turnScore)")
-                HStack {
-                    Button ("Roll") {
-                        chooseRandom(times: 3)
-                        withAnimation(.interpolatingSpring(stiffness: 10, damping: 2)) {
-                            rotation += 360
+        NavigationView {
+            ZStack {
+                Color.gray.opacity(0.6).ignoresSafeArea()
+                VStack {
+                    Image("Pig").resizable().frame(width: 150, height: 150)
+                    CustomText(text: "Pig")
+                    Spacer()
+                    Image("pips \(randomValue)")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                        .rotationEffect(.degrees(rotation))
+                        .rotation3DEffect(.degrees(rotation), axis: (x: 1, y: 1, z: 0))
+                        .padding()
+                    CustomText(text: "Turn Score: \(turnScore)")
+                    HStack {
+                        Button ("Roll") {
+                            chooseRandom(times: 3)
+                            withAnimation(.interpolatingSpring(stiffness: 10, damping: 2)) {
+                                rotation += 360
+                            }
                         }
-                    }
-                    .buttonStyle(CustomButtonStyle())
-                    Button ("Hold") {
-                        gameScore += turnScore
-                        endTurn()
-                        withAnimation(.easeInOut(duration: 1)) {
-                            rotation += 360
-                        }
-                        if gameScore >= 100 {
-                            gameOver = true
-                        }
-                    }
                         .buttonStyle(CustomButtonStyle())
-                }
-                CustomText(text: "Game Score: \(gameScore)")
-                NavigationLink("How To Play", destination: InstructionView())
-                    .font(Font.custom("Marker Felt", size: 24))
-                    .padding()
-                Button("Reset"){
-                    endTurn()
-                    gameScore = 0
-                }
-                .font(Font.custom("Marker Felt", size: 24))
-            }
-            .alert(isPresented: $gameOver, content: {
-                Alert(title: Text("You Won The Game"),dismissButton:
-                        .destructive(Text("Play Again"), action: {
-                            withAnimation{
-                                gameScore = 0
-                                gameOver = false
+                        Button ("Hold") {
+                            gameScore += turnScore
+                            endTurn()
+                            withAnimation(.easeInOut(duration: 1)) {
+                                rotation += 360
+                            }
+                            if gameScore >= 100 {
+                                gameOver = true
+                            }
+                        }
+                        .buttonStyle(CustomButtonStyle())
                     }
-                }))
-            })
+                    CustomText(text: "Game Score: \(gameScore)")
+                    Spacer()
+                    NavigationLink("How to Play", destination: InstructionsView())
+                        .font(Font.custom("Marker Felt", size:24))
+                        .padding()
+                    Button("Reset") {
+                        endTurn()
+                        gameScore = 0
+                        
+                    }
+                    .font(Font.custom("Marker Felt", size: 24))
+                }
+                .alert(isPresented: $gameOver, content: {
+                    Alert(title: Text("You Won The Game"),dismissButton:
+                            .destructive(Text("Play Again"), action: {
+                                withAnimation{
+                                    gameScore = 0
+                                    gameOver = false
+                                }
+                            }))
+                })
+            }
         }
     }
     func endTurn() {
@@ -109,10 +113,10 @@ struct CustomButtonStyle: ButtonStyle {
             .clipShape (RoundedRectangle (cornerRadius: 10))
     }
 }
-struct InstructionView: View {
+struct InstructionsView: View {
     var body: some View {
         ZStack {
-            Color.gray.opacity(0.7).ignoresSafeArea()
+            Color.gray.opacity(1).ignoresSafeArea()
             VStack {
                 Image ("Pig").resizable().frame(width: 150, height: 150)
                 CustomText(text: "Pig")
@@ -133,6 +137,7 @@ struct InstructionView: View {
             }
         }
     }
+    
 }
 
 
