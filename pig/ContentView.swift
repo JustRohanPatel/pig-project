@@ -19,7 +19,7 @@ struct ContentView: View {
                 Color.gray.opacity(0.6).ignoresSafeArea()
                 VStack {
                     Image("Pig").resizable().frame(width: 150, height: 150)
-                    CustomText(text: "Pigg")
+                    CustomText(text: "Pig")
                     Spacer()
                     Image("pips \(randomValue)")
                         .resizable()
